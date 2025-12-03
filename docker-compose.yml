@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - src/.env
+    volumes:
+      - "./db:/var/lib/postgresql/data"
