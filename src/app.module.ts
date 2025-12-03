@@ -58,7 +58,7 @@ import { ConfigModule } from '@nestjs/config';
           port: 5432,
           user: 'postgres',
           password: '123',
-          database: 'NewsLetter',
+          database: 'newsLetter',
         },
         pool: { min: 2, max: 10 },
       },

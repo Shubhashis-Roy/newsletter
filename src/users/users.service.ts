@@ -1,8 +1,17 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException, ConsoleLogger } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+  ConsoleLogger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User, UserRole } from './entities/user.entity';
+import {
+  User,
+  UserRole,
+} from './entities/user.entity';
 import { Organization } from '../organizations/entities/organization.entity';
 import { isUUID } from 'class-validator';
 
@@ -13,26 +22,80 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(Organization)
     private organizationRepository: Repository<Organization>,
-  ) { }
+  ) {}
+
+  async createUser(
+    dto: CreateUserDto,
+  ): Promise<User> {
+    const exists =
+      await this.userRepository.findOne({
+        where: { email: dto.email },
+      });
+
+    if (exists) {
+      throw new ConflictException(
+        'Email already exists',
+      );
+    }
+
+    const organization =
+      await this.organizationRepository.findOne({
+        where: { id: dto.organizationId },
+      });
+
+    if (!organization) {
+      throw new ConflictException(
+        'Organization does not exist',
+      );
+    }
+
+    const user = this.userRepository.create({
+      email: dto.email,
+      fullName: dto.fullName,
+      password: dto.password,
+      role: dto.role,
+      organization: organization,
+    });
+
+    return await this.userRepository.save(user);
+  }
 
   async create(createUserDto: CreateUserDto) {
-
-    const existingUser = await this.userRepository.findOne({ where: { email: createUserDto.email } });
+    const existingUser =
+      await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      });
     if (existingUser) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException(
+        'Email already exists',
+      );
     }
 
     if (createUserDto.organizationId) {
-      const organization = await this.organizationRepository.findOne({ where: { id: createUserDto.organizationId } });
+      const organization =
+        await this.organizationRepository.findOne(
+          {
+            where: {
+              id: createUserDto.organizationId,
+            },
+          },
+        );
       if (organization) {
         const user = new User();
         user.email = createUserDto.email;
         user.password = createUserDto.password;
-        user.fullName = createUserDto.fullName
+        user.fullName = createUserDto.fullName;
         user.role = createUserDto.role;
 
         if (createUserDto.organizationId) {
-          const organization = await this.organizationRepository.findOne({ where: { id: createUserDto.organizationId } });
+          const organization =
+            await this.organizationRepository.findOne(
+              {
+                where: {
+                  id: createUserDto.organizationId,
+                },
+              },
+            );
           if (organization) {
             user.organization = organization;
           }
@@ -40,53 +103,94 @@ export class UserService {
 
         return this.userRepository.save(user);
       } else {
-        throw new ConflictException('Organization is not exists')
+        throw new ConflictException(
+          'Organization is not exists',
+        );
       }
     }
-
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { email } });
+  async findByEmail(
+    email: string,
+  ): Promise<User> {
+    const user =
+      await this.userRepository.findOne({
+        where: { email },
+      });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(
+        'User not found',
+      );
     }
     return user;
   }
 
   async findById(id: string): Promise<User> {
     if (!id) {
-      throw new NotFoundException('Invalid ID parameter');
+      throw new NotFoundException(
+        'Invalid ID parameter',
+      );
     }
 
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user =
+      await this.userRepository.findOne({
+        where: { id },
+      });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(
+        'User not found',
+      );
     }
     return user;
   }
 
-  async update(id: string, updateUserDto?: Partial<CreateUserDto>): Promise<User> {
+  async update(
+    id: string,
+    updateUserDto?: Partial<CreateUserDto>,
+  ): Promise<User> {
+    if (!isUUID(id))
+      throw new BadRequestException(
+        'Invalid UUID format',
+      );
 
-    if (!isUUID(id)) throw new BadRequestException('Invalid UUID format');
+    const user =
+      await this.userRepository.findOne({
+        where: { id },
+      });
+    if (!user)
+      throw new NotFoundException(
+        'User not found',
+      );
 
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) throw new NotFoundException('User not found');
-
-    if (!updateUserDto || Object.keys(updateUserDto).length === 0) {
-      throw new BadRequestException('No update data provided');
+    if (
+      !updateUserDto ||
+      Object.keys(updateUserDto).length === 0
+    ) {
+      throw new BadRequestException(
+        'No update data provided',
+      );
     }
 
-    if (updateUserDto?.fullName) user.fullName = updateUserDto.fullName;
-    if (updateUserDto?.email) user.email = updateUserDto.email;
-    if (updateUserDto?.password) user.password = updateUserDto.password;
-    if (updateUserDto?.role) user.role = updateUserDto.role;
+    if (updateUserDto?.fullName)
+      user.fullName = updateUserDto.fullName;
+    if (updateUserDto?.email)
+      user.email = updateUserDto.email;
+    if (updateUserDto?.password)
+      user.password = updateUserDto.password;
+    if (updateUserDto?.role)
+      user.role = updateUserDto.role;
 
     if (updateUserDto.organizationId) {
-      const organization = await this.organizationRepository.findOne({
-        where: { id: updateUserDto.organizationId },
-      });
-      if (organization) user.organization = organization;
+      const organization =
+        await this.organizationRepository.findOne(
+          {
+            where: {
+              id: updateUserDto.organizationId,
+            },
+          },
+        );
+      if (organization)
+        user.organization = organization;
     }
 
     return await this.userRepository.save(user);
