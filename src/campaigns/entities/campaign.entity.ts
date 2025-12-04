@@ -52,6 +52,20 @@ export class Campaign {
   @Column({ default: 0 })
   opened: number;
 
+  @Column({
+    type: 'varchar',
+    length: 500,
+    nullable: true,
+  })
+  rssFeed?: string;
+
+  @Column({
+    type: 'varchar',
+    length: 500,
+    nullable: true,
+  })
+  lastFetchedItem?: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

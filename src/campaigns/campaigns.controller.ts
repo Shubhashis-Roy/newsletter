@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Patch,
   Body,
   Get,
   Param,
@@ -38,6 +39,20 @@ export class CampaignController {
     return this.campaignService.sendCampaign(
       id,
       filters,
+    );
+  }
+
+  // ────────────────────────────────────────────────
+  // ⭐ PATCH RSS Feed (Add / Update RSS Feed)
+  // ────────────────────────────────────────────────
+  @Patch(':id/rss-feed')
+  async updateRssFeed(
+    @Param('id') id: string,
+    @Body('rssFeed') rssFeed: string,
+  ) {
+    return this.campaignService.updateRssFeed(
+      id,
+      rssFeed,
     );
   }
 }

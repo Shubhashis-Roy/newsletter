@@ -13,9 +13,17 @@ import { InjectKnex } from 'nestjs-knex';
 import { EmailService } from '../email/email.service';
 import { ListService } from '../lists/lists.service';
 import { Knex } from 'knex';
+import {
+  Cron,
+  CronExpression,
+} from '@nestjs/schedule';
+import * as Parser from 'rss-parser';
+import { Not, IsNull } from 'typeorm';
 
 @Injectable()
 export class CampaignService {
+  private rssParser = new Parser();
+
   constructor(
     @InjectRepository(Campaign)
     private campaignRepository: Repository<Campaign>,
@@ -59,6 +67,12 @@ export class CampaignService {
       if (organization) {
         campaign.organization = organization;
       }
+    }
+
+    if (createCampaignDto.rssFeed) {
+      campaign.rssFeed =
+        createCampaignDto.rssFeed;
+      campaign.lastFetchedItem = null;
     }
 
     return this.campaignRepository.save(campaign);
@@ -159,5 +173,104 @@ export class CampaignService {
       );
       throw error;
     }
+  }
+
+  @Cron(CronExpression.EVERY_5_MINUTES)
+  async autoGenerateFromRSS() {
+    console.log(
+      '⏳ Checking RSS feeds for new articles...',
+    );
+
+    // Find campaigns that have an RSS feed configured
+    const rssCampaigns =
+      await this.campaignRepository.find({
+        where: { rssFeed: Not(IsNull()) },
+        relations: ['list', 'organization'],
+      });
+
+    for (const campaign of rssCampaigns) {
+      try {
+        const feed =
+          await this.rssParser.parseURL(
+            campaign.rssFeed,
+          );
+
+        if (!feed?.items?.length) continue;
+
+        // Get latest article
+        const latestItem = feed.items[0];
+
+        // If already processed, skip
+        if (
+          campaign.lastFetchedItem ===
+          latestItem.link
+        ) {
+          continue;
+        }
+
+        // Create new campaign from RSS
+        const newCampaign =
+          this.campaignRepository.create({
+            subject:
+              latestItem.title ||
+              'New RSS Update',
+            content:
+              latestItem.contentSnippet ||
+              latestItem.content ||
+              '',
+            list: campaign.list,
+            organization: campaign.organization,
+            rssFeed: campaign.rssFeed,
+            lastFetchedItem: latestItem.link,
+          });
+
+        await this.campaignRepository.save(
+          newCampaign,
+        );
+
+        // Update parent's lastFetchedItem
+        campaign.lastFetchedItem =
+          latestItem.link;
+        await this.campaignRepository.save(
+          campaign,
+        );
+
+        console.log(
+          `📢 Auto-created campaign from RSS: ${latestItem.title}`,
+        );
+      } catch (error) {
+        console.error(
+          `❌ Error processing RSS feed (${campaign.rssFeed}):`,
+          error.message,
+        );
+      }
+    }
+  }
+
+  // ────────────────────────────────────────────────
+  // ⭐ Update / Add RSS Feed to a Campaign
+  // ────────────────────────────────────────────────
+  async updateRssFeed(
+    id: string,
+    rssFeed: string,
+  ) {
+    const campaign =
+      await this.campaignRepository.findOne({
+        where: { id },
+      });
+
+    if (!campaign) {
+      throw new NotFoundException(
+        'Campaign not found',
+      );
+    }
+
+    // Update RSS feed & reset tracking
+    campaign.rssFeed = rssFeed;
+    campaign.lastFetchedItem = null;
+
+    return await this.campaignRepository.save(
+      campaign,
+    );
   }
 }

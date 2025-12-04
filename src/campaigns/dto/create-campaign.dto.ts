@@ -21,4 +21,8 @@ export class CreateCampaignDto {
   @IsOptional()
   @IsUUID()
   organizationId?: string;
+
+  @IsOptional()
+  @IsString()
+  rssFeed?: string;
 }
