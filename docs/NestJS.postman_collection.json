@@ -1,0 +1,1106 @@
+{
+	"info": {
+		"_postman_id": "60dc6389-9a60-4e71-8409-6085323a30dd",
+		"name": "NestJS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36375989"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test1@mail.com\",\n  \"fullName\": \"Shubhashis\",\n  \"password\": \"pass1234\",\n  \"organizationId\": \"af68dc67-19cd-4794-99b9-630f4284e1ab\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test1@mail.com\", \n  \"password\": \"pass1234\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQG1haWwuY29tIiwic3ViIjoiZGZkMjM1YjAtZjc0Mi00ZWM2LTk4MGYtNDEzMjBlYWY4ODZlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjQ4NzYxMTUsImV4cCI6MTc2NDk2MjUxNX0.Z7iTNTh_bBcVN5QJORZn4dF83tBQEFjJXGNFfBhDIqY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users/profile/dfd235b0-f742-4ec6-980f-41320eaf886e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"profile",
+						"dfd235b0-f742-4ec6-980f-41320eaf886e"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get_user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/profile/c7853fa6-4028-44c4-869b-afb1971ff207",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"c7853fa6-4028-44c4-869b-afb1971ff207"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "182"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b6-qy4ax3ALoW63WBgIZNLFgdQtudU\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Oct 2025 16:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"c7853fa6-4028-44c4-869b-afb1971ff207\",\n    \"email\": \"abc2@gmail.com\",\n    \"password\": \"123456\",\n    \"role\": \"user\",\n    \"createdAt\": \"2025-10-29T15:56:53.953Z\",\n    \"updatedAt\": \"2025-10-29T15:56:53.953Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user_login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"nilay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "login_succeed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"abc@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "84"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"54-U5fLSR+udtnzvM9wW2a5BRErkjI\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Oct 2025 15:39:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"email\": \"abc@gmail.com\",\n    \"sub\": \"9c0e1a44-adf4-468b-83b3-32a12aac2ea9\",\n    \"role\": \"user\"\n}"
+				}
+			]
+		},
+		{
+			"name": "user_delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/users/profile/817a0378-567a-4145-a05d-fef3d42fb5c6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"profile",
+						"817a0378-567a-4145-a05d-fef3d42fb5c6"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user_delete",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/profile/c7853fa6-4028-44c4-869b-afb1971ff207",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"c7853fa6-4028-44c4-869b-afb1971ff207"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Oct 2025 16:27:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "user_patch",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQG1haWwuY29tIiwic3ViIjoiZGZkMjM1YjAtZjc0Mi00ZWM2LTk4MGYtNDEzMjBlYWY4ODZlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjQ4NzYxMTUsImV4cCI6MTc2NDk2MjUxNX0.Z7iTNTh_bBcVN5QJORZn4dF83tBQEFjJXGNFfBhDIqY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/users/profile/dfd235b0-f742-4ec6-980f-41320eaf886e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"profile",
+						"dfd235b0-f742-4ec6-980f-41320eaf886e"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user_patch",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"email\": \"nilay1@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/profile/20ee7776-d384-4d0f-a98c-65ce10944059",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"20ee7776-d384-4d0f-a98c-65ce10944059"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "211"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d3-/lmojyVHRJ64KYMqzR95mEPcDMo\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 30 Oct 2025 10:05:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"20ee7776-d384-4d0f-a98c-65ce10944059\",\n    \"email\": \"nilay1@gmail.com\",\n    \"fullName\": \"Joshi Nilay\",\n    \"password\": \"12345678\",\n    \"role\": \"user\",\n    \"createdAt\": \"2025-10-30T08:59:48.749Z\",\n    \"updatedAt\": \"2025-10-30T10:05:29.584Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "campaigns_create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"Weekly Newsletter #5\",\n    \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n    \"listId\": \"c660aa9d-bc4c-476b-b721-1f5e5879ee18\",\n    \"organizationId\": \"f9cfd63c-8d02-4a09-bd29-6c97357ef73c\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/campaigns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaigns"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\": \"Weekly Newsletter #5\",\n    \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n    \"listId\": \"b1887743-0400-4d4a-93a4-390a8a0a93c4\",\n    \"organizationId\": \"350b0009-f4f0-44e1-90e2-e9d3eb4b8974\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/campaigns",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"campaigns"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "574"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"23e-NqBhByjb+7uHdyMYcsqPmoAPrWk\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 03 Nov 2025 16:05:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"subject\": \"Weekly Newsletter #5\",\n    \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n    \"list\": {\n        \"id\": \"b1887743-0400-4d4a-93a4-390a8a0a93c4\",\n        \"name\": \"Weekly Newsletter\",\n        \"customFields\": {\n            \"country\": \"India\"\n        },\n        \"createdAt\": \"2025-11-02T07:03:22.375Z\"\n    },\n    \"organization\": {\n        \"id\": \"350b0009-f4f0-44e1-90e2-e9d3eb4b8974\",\n        \"name\": \"org2\",\n        \"createdAt\": \"2025-10-29T15:56:22.092Z\",\n        \"updatedAt\": \"2025-10-29T15:56:22.092Z\"\n    },\n    \"id\": \"7022e31d-00b5-4bd6-a8c5-634e7f4fa7e5\",\n    \"click_tracking_disabled\": false,\n    \"open_tracking_disabled\": false,\n    \"opened\": 0,\n    \"createdAt\": \"2025-11-03T16:05:52.070Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "campaign_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"Weekly Newsletter #5\",\n    \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n    \"listId\": \"b1887743-0400-4d4a-93a4-390a8a0a93c4\",\n    \"organizationId\": \"350b0009-f4f0-44e1-90e2-e9d3eb4b8974\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/campaigns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaigns"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/campaigns",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"campaigns"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "267"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"10b-cXRlBgbHC8XfI2PB+Sfa3W+UKFQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 03 Nov 2025 16:08:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\n        \"subject\": \"Weekly Newsletter #5\",\n        \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n        \"click_tracking_disabled\": true,\n        \"open_tracking_disabled\": true,\n        \"opened\": 0,\n        \"createdAt\": \"2025-11-03T16:04:30.730Z\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "click-stats_create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignId\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\r\n    \"link\": \"https://www.youtube.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/click-stats/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"click-stats",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"campaignId\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\r\n    \"link\": \"https://www.youtube.com\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/click-stats/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"click-stats",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "409"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"199-6d262ans1PY6LsMi8JlLyuDbcs8\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Nov 2025 09:24:53 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"link\": \"https://www.youtube.com\",\n    \"clickCount\": 0,\n    \"campaign\": {\n        \"id\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\n        \"subject\": \"Weekly Newsletter #5\",\n        \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n        \"click_tracking_disabled\": true,\n        \"open_tracking_disabled\": true,\n        \"opened\": 0,\n        \"createdAt\": \"2025-11-03T16:04:30.730Z\"\n    },\n    \"id\": \"24d7582f-2cee-4991-8853-b6b845d9343f\",\n    \"createdAt\": \"2025-11-04T09:24:53.312Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "click-stats_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/click-stats/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"click-stats",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/click-stats/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"click-stats",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "411"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19b-FooPD5KElURl5J3Gt1yfR9rFnEU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Nov 2025 09:26:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"24d7582f-2cee-4991-8853-b6b845d9343f\",\n        \"link\": \"https://www.youtube.com\",\n        \"clickCount\": 0,\n        \"createdAt\": \"2025-11-04T09:24:53.312Z\",\n        \"campaign\": {\n            \"id\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\n            \"subject\": \"Weekly Newsletter #5\",\n            \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n            \"click_tracking_disabled\": true,\n            \"open_tracking_disabled\": true,\n            \"opened\": 0,\n            \"createdAt\": \"2025-11-03T16:04:30.730Z\"\n        }\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Track Link Click",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/click-stats/track/47a9f300-966e-404f-bd2b-7b7a4d213370?url=https%3A%2F%2Fgoogle.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"click-stats",
+						"track",
+						"47a9f300-966e-404f-bd2b-7b7a4d213370"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "https%3A%2F%2Fgoogle.com"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/click-stats/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"click-stats",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "411"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19b-FooPD5KElURl5J3Gt1yfR9rFnEU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Nov 2025 09:26:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"24d7582f-2cee-4991-8853-b6b845d9343f\",\n        \"link\": \"https://www.youtube.com\",\n        \"clickCount\": 0,\n        \"createdAt\": \"2025-11-04T09:24:53.312Z\",\n        \"campaign\": {\n            \"id\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\n            \"subject\": \"Weekly Newsletter #5\",\n            \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n            \"click_tracking_disabled\": true,\n            \"open_tracking_disabled\": true,\n            \"opened\": 0,\n            \"createdAt\": \"2025-11-03T16:04:30.730Z\"\n        }\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Update RSS Feed for Campaign",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rssFeed\": \"https://techcrunch.com/feed/\"\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/campaigns/a5a6a1d0-0a3c-4d1f-b727-9654419ef46a/rss-feed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"campaigns",
+						"a5a6a1d0-0a3c-4d1f-b727-9654419ef46a",
+						"rss-feed"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/click-stats/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"click-stats",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "411"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19b-FooPD5KElURl5J3Gt1yfR9rFnEU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Nov 2025 09:26:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"24d7582f-2cee-4991-8853-b6b845d9343f\",\n        \"link\": \"https://www.youtube.com\",\n        \"clickCount\": 0,\n        \"createdAt\": \"2025-11-04T09:24:53.312Z\",\n        \"campaign\": {\n            \"id\": \"730531e8-7dd4-42c6-b49f-7191a96df7ba\",\n            \"subject\": \"Weekly Newsletter #5\",\n            \"content\": \"<h1>Hello Subscribers!</h1><p>Welcome to our weekly update.</p>\",\n            \"click_tracking_disabled\": true,\n            \"open_tracking_disabled\": true,\n            \"opened\": 0,\n            \"createdAt\": \"2025-11-03T16:04:30.730Z\"\n        }\n    }\n]"
+				}
+			]
+		}
+	]
+}
