@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('links')
 export class Link {
@@ -25,5 +31,5 @@ export class Link {
 }
 export const LinkId = {
   OPEN: -1,
-  GENERAL_CLICK: 0
+  GENERAL_CLICK: 0,
 };

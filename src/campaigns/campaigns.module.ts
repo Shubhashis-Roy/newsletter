@@ -10,13 +10,20 @@ import { AuthModule } from '../auth/auth.module';
 import { EmailModule } from '../email/email.module';
 import { ListsModule } from '../lists/lists.module';
 
-@Module({ 
+@Module({
   imports: [
-    TypeOrmModule.forFeature([Campaign, List, Organization, Subscriber]),
-    AuthModule, EmailModule, ListsModule
+    TypeOrmModule.forFeature([
+      Campaign,
+      List,
+      Organization,
+      Subscriber,
+    ]),
+    AuthModule,
+    EmailModule,
+    ListsModule,
   ],
   controllers: [CampaignController],
   providers: [CampaignService],
-  exports: [CampaignService]
+  exports: [CampaignService],
 })
 export class CampaignsModule {}

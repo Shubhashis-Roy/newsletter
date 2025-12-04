@@ -18,7 +18,9 @@ import { Response } from 'express';
 @Controller('click-stats')
 // @UseGuards(RolesGuard)
 export class ClickStatController {
-  constructor(private readonly clickStatService: ClickStatService) {}
+  constructor(
+    private readonly clickStatService: ClickStatService,
+  ) {}
 
   private readonly trackImg = Buffer.from(
     'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
@@ -31,8 +33,13 @@ export class ClickStatController {
 
   @Post()
   // @Roles(UserRole.ADMIN)
-  create(@Body() createClickStatDto: CreateClickStatDto) {
-    return this.clickStatService.create(createClickStatDto);
+  create(
+    @Body()
+    createClickStatDto: CreateClickStatDto,
+  ) {
+    return this.clickStatService.create(
+      createClickStatDto,
+    );
   }
 
   @Get()
@@ -48,7 +55,8 @@ export class ClickStatController {
     @Param('link') link: string,
     @Res() res: Response,
   ) {
-    const resolvedLink = await this.clickStatService.resolve(link);
+    const resolvedLink =
+      await this.clickStatService.resolve(link);
 
     if (resolvedLink) {
       // Redirect to the resolved URL
@@ -65,7 +73,10 @@ export class ClickStatController {
       );
     } else {
       // Log the error and throw a Not Found exception
-      console.error('Redirect', `Unresolved URL: <${res.req.url}>`);
+      console.error(
+        'Redirect',
+        `Unresolved URL: <${res.req.url}>`,
+      );
       throw new HttpException(
         "Oops, we couldn't find a link for the URL you clicked",
         HttpStatus.NOT_FOUND,
@@ -76,12 +87,25 @@ export class ClickStatController {
   @Get('track/:campaignId')
   async trackClick(
     @Param('campaignId') campaignId: string,
-    @Query('link') link: string,
+    @Query('url') encodedUrl: string,
     @Res() res: Response,
   ) {
-    const realLink = await this.clickStatService.trackAndRedirect(campaignId, link);
+    if (!encodedUrl) {
+      throw new HttpException(
+        'Missing url parameter',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-    return res.redirect(realLink);
+    const link = decodeURIComponent(encodedUrl);
+
+    const redirectUrl =
+      await this.clickStatService.trackAndRedirect(
+        campaignId,
+        link,
+      );
+
+    return res.redirect(redirectUrl);
   }
 
   @Get(':campaign/:list/:subscription')

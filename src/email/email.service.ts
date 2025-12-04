@@ -3,9 +3,15 @@ import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class EmailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+  ) {}
 
-  async sendEmail(to: string, subject: string, text: string) {
+  async sendEmail(
+    to: string,
+    subject: string,
+    text: string,
+  ) {
     const emailTemplate = `
         <!DOCTYPE html>
         <html lang="en">

@@ -21,15 +21,26 @@ export class Campaign {
   @Column('text')
   content: string;
 
-  @ManyToOne(() => List, (list) => list.campaigns, { onDelete: 'CASCADE' })
+  @ManyToOne(
+    () => List,
+    (list) => list.campaigns,
+    { onDelete: 'CASCADE' },
+  )
   list: List;
 
-  @ManyToOne(() => Organization, (organization) => organization.campaigns, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => Organization,
+    (organization) => organization.campaigns,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   organization: Organization;
 
-  @OneToMany(() => ClickStat, (clickStat) => clickStat.campaign)
+  @OneToMany(
+    () => ClickStat,
+    (clickStat) => clickStat.campaign,
+  )
   clickStats: ClickStat[];
 
   @Column({ default: false })

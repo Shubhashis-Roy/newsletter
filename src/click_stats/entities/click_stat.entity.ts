@@ -13,9 +13,13 @@ export class ClickStat {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Campaign, (campaign) => campaign.clickStats, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => Campaign,
+    (campaign) => campaign.clickStats,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   campaign: Campaign;
 
   @Column({ length: 255 })

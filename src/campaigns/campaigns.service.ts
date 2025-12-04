@@ -1,4 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Campaign } from './entities/campaign.entity';
@@ -23,24 +26,36 @@ export class CampaignService {
     @InjectRepository(Subscriber)
     private subscriberRepository: Repository<Subscriber>,
     private readonly emailService: EmailService,
-    private readonly listService: ListService, 
+    private readonly listService: ListService,
     @InjectKnex() private readonly knex: Knex,
-  ) { }
+  ) {}
 
-  async createCampaign(createCampaignDto: CreateCampaignDto): Promise<Campaign> {
+  async createCampaign(
+    createCampaignDto: CreateCampaignDto,
+  ): Promise<Campaign> {
     const campaign = new Campaign();
     campaign.subject = createCampaignDto.subject;
     campaign.content = createCampaignDto.content;
 
     if (createCampaignDto.listId) {
-      const list = await this.listRepository.findOne({ where: { id: createCampaignDto.listId } });
+      const list =
+        await this.listRepository.findOne({
+          where: { id: createCampaignDto.listId },
+        });
       if (list) {
         campaign.list = list;
       }
     }
 
     if (createCampaignDto.organizationId) {
-      const organization = await this.organizationRepository.findOne({ where: { id: createCampaignDto.organizationId } });
+      const organization =
+        await this.organizationRepository.findOne(
+          {
+            where: {
+              id: createCampaignDto.organizationId,
+            },
+          },
+        );
       if (organization) {
         campaign.organization = organization;
       }
@@ -56,28 +71,36 @@ export class CampaignService {
     });
   }
 
-   async sendCampaign(
+  async sendCampaign(
     id: string,
     filters?: Record<string, any>,
   ): Promise<any> {
     // find campaign
-    const campaign = await this.campaignRepository.findOne({
-      where: { id },
-      relations: ['list', 'organization'],
-    });
+    const campaign =
+      await this.campaignRepository.findOne({
+        where: { id },
+        relations: ['list', 'organization'],
+      });
 
-    if (!campaign) throw new NotFoundException('Campaign not found');
+    if (!campaign)
+      throw new NotFoundException(
+        'Campaign not found',
+      );
 
     // Segment subscribers using working segmentation function
-    const segmented = await this.listService.segmentSubscribers(
-      campaign.list.id,
-      filters || {},
-    );
+    const segmented =
+      await this.listService.segmentSubscribers(
+        campaign.list.id,
+        filters || {},
+      );
 
     const subscribers = segmented.data;
 
     if (!subscribers.length) {
-      return { message: 'No subscribers matched segmentation filters' };
+      return {
+        message:
+          'No subscribers matched segmentation filters',
+      };
     }
 
     let successCount = 0;
@@ -92,7 +115,10 @@ export class CampaignService {
         );
         successCount++;
       } catch (err) {
-        console.error(`Failed to send to ${sub.email}:`, err.message);
+        console.error(
+          `Failed to send to ${sub.email}:`,
+          err.message,
+        );
         failedCount++;
       }
     }
@@ -114,14 +140,23 @@ export class CampaignService {
     try {
       const entity = await tx('campaigns')
         .where('campaigns.id', cid)
-        .select(['campaigns.id', 'campaigns.click_tracking_disabled', 'campaigns.open_tracking_disabled'])
+        .select([
+          'campaigns.id',
+          'campaigns.click_tracking_disabled',
+          'campaigns.open_tracking_disabled',
+        ])
         .first();
       if (!entity) {
-        throw new NotFoundException(`Campaign with CID ${cid} not found`);
+        throw new NotFoundException(
+          `Campaign with CID ${cid} not found`,
+        );
       }
       return entity;
     } catch (error) {
-      console.error('Error fetching campaign tracking settings:', error);
+      console.error(
+        'Error fetching campaign tracking settings:',
+        error,
+      );
       throw error;
     }
   }

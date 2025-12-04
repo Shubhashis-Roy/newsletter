@@ -4,7 +4,10 @@ import { Repository } from 'typeorm';
 import { ClickStat } from './entities/click_stat.entity';
 import { CreateClickStatDto } from './dto/create-click_stat.dto';
 import { Campaign } from '../campaigns/entities/campaign.entity';
-import { Link, LinkId } from './entities/link.entity';
+import {
+  Link,
+  LinkId,
+} from './entities/link.entity';
 import { InjectKnex, Knex } from 'nestjs-knex';
 // import geoip from 'geoip-ultralight';
 import * as geoip from 'geoip-lite';
@@ -36,17 +39,23 @@ export class ClickStatService {
     private campaignService: CampaignService,
     private subscriberService: SubscriberService,
     // private contextService: ContextService
-  ) { }
+  ) {}
 
-  async create(createClickStatDto: CreateClickStatDto) {
+  async create(
+    createClickStatDto: CreateClickStatDto,
+  ) {
     const clickStat = new ClickStat();
     clickStat.link = createClickStatDto.link;
-    clickStat.clickCount = createClickStatDto.clickCount || 0;
+    clickStat.clickCount =
+      createClickStatDto.clickCount || 0;
 
     if (createClickStatDto.campaignId) {
-      const campaign = await this.campaignRepository.findOne({
-        where: { id: createClickStatDto.campaignId },
-      });
+      const campaign =
+        await this.campaignRepository.findOne({
+          where: {
+            id: createClickStatDto.campaignId,
+          },
+        });
       if (campaign) {
         clickStat.campaign = campaign;
       } else {
@@ -56,45 +65,69 @@ export class ClickStatService {
       throw new Error('Campaign ID is required');
     }
 
-    return this.clickStatRepository.save(clickStat);
+    return this.clickStatRepository.save(
+      clickStat,
+    );
   }
 
   findAll() {
-    return this.clickStatRepository.find({ relations: ['campaign'] });
+    return this.clickStatRepository.find({
+      relations: ['campaign'],
+    });
   }
 
   async incrementClickCount(id: string) {
-    const clickStat = await this.clickStatRepository.findOne({ where: { id } });
+    const clickStat =
+      await this.clickStatRepository.findOne({
+        where: { id },
+      });
     if (!clickStat) {
       throw new Error('ClickStat not found');
     }
     clickStat.clickCount += 1;
-    return this.clickStatRepository.save(clickStat);
+    return this.clickStatRepository.save(
+      clickStat,
+    );
   }
 
-  async resolve(linkCid: string): Promise<Link | null> {
-    return await this.linkRepository.findOne({ where: { cid: linkCid } });
-  }
-
-  async trackAndRedirect(campaignId: string, link: string): Promise<string> {
-    // Find existing stat
-    let clickStat = await this.clickStatRepository.findOne({
-      where: { campaign: { id: campaignId }, link },
-      relations: ['campaign'],
+  async resolve(
+    linkCid: string,
+  ): Promise<Link | null> {
+    return await this.linkRepository.findOne({
+      where: { cid: linkCid },
     });
+  }
+
+  async trackAndRedirect(
+    campaignId: string,
+    link: string,
+  ): Promise<string> {
+    // Find existing stat
+    let clickStat =
+      await this.clickStatRepository.findOne({
+        where: {
+          campaign: { id: campaignId },
+          link,
+        },
+        relations: ['campaign'],
+      });
 
     // Increment or create
     if (clickStat) {
       clickStat.clickCount += 1;
     } else {
-      clickStat = this.clickStatRepository.create({
-        campaign: { id: campaignId },
-        link,
-        clickCount: 1,
-      });
+      clickStat = this.clickStatRepository.create(
+        {
+          campaign: { id: campaignId },
+          link,
+          clickCount: 1,
+        },
+      );
     }
 
-    await this.clickStatRepository.save(clickStat);
+    await this.clickStatRepository.save(
+      clickStat,
+    );
 
     return link;
   }
@@ -110,27 +143,34 @@ export class ClickStatService {
     // Use a transaction for atomic operations
     await this.knex.transaction(async (tx) => {
       console.log('g');
-      const list = await this.listService.getByCidTx(tx, listCid);
+      const list =
+        await this.listService.getByCidTx(
+          tx,
+          listCid,
+        );
       console.log('list', list);
-      const campaign = await this.campaignService.getTrackingSettingsByCidTx(
-        tx,
-        campaignCid,
-      );
+      const campaign =
+        await this.campaignService.getTrackingSettingsByCidTx(
+          tx,
+          campaignCid,
+        );
       console.log('camp', campaign);
-      const subscription = await this.subscriberService.getByCidTx(
-        tx,
-        list.id,
-        subscriptionCid,
-      );
-      console.log("subs", subscription);
+      const subscription =
+        await this.subscriberService.getByCidTx(
+          tx,
+          list.id,
+          subscriptionCid,
+        );
+      console.log('subs', subscription);
       // const country = geoip.lookup(remoteIp).country || null;
       // const country = 'geoip.lookup(remoteIp).country';
       const geo = geoip.lookup(remoteIp);
 
-
       const uaParser = new UAParser();
       // const userAgent = request.headers['user-agent'];  // Get user-agent from headers
-      const uaData = uaParser.setUA(userAgent).getResult(); // Parse user-agent string
+      const uaData = uaParser
+        .setUA(userAgent)
+        .getResult(); // Parse user-agent string
       console.log(uaData);
       // const device = {
       //   type: parsedData.device.type || 'desktop', // Default to 'desktop' if device type is unknown or empty
@@ -144,7 +184,9 @@ export class ClickStatService {
       const now = new Date();
 
       // Helper function to handle inserting and updating clicks
-      const _countLink = async (clickLinkId: number) => {
+      const _countLink = async (
+        clickLinkId: number,
+      ) => {
         try {
           // const campaignLinksQry = this.knex('campaign_links')
           //   .insert({
@@ -166,7 +208,9 @@ export class ClickStatService {
           //   campaignLinksQry.bindings,
           // );
 
-          const campaignLinksQry = this.knex('campaign_links')
+          const campaignLinksQry = this.knex(
+            'campaign_links',
+          )
             .insert({
               campaign: campaign.id,
               list: list.id,
@@ -178,14 +222,19 @@ export class ClickStatService {
               count: 1,
             })
             .onConflict(['campaign']) // Specify the columns for conflict
-            .merge({ count: this.knex.raw('"campaign_links"."count" + 1') })
+            .merge({
+              count: this.knex.raw(
+                '"campaign_links"."count" + 1',
+              ),
+            })
             .returning('*')
             .toSQL();
 
-          const campaignLinksQryResult = await tx.raw(
-            campaignLinksQry.sql,
-            campaignLinksQry.bindings,
-          );
+          const campaignLinksQryResult =
+            await tx.raw(
+              campaignLinksQry.sql,
+              campaignLinksQry.bindings,
+            );
 
           console.log(campaignLinksQryResult);
 
@@ -211,14 +260,16 @@ export class ClickStatService {
           //   campaignLinksQry.bindings,
           // );
 
-          if (campaignLinksQryResult.rows.length > 1) {
+          if (
+            campaignLinksQryResult.rows.length > 1
+          ) {
             return false;
           }
 
           return true;
         } catch (err) {
           if (err.code === 'ER_DUP_ENTRY') {
-            console.log("dbg")
+            console.log('dbg');
             return false;
           }
           throw err;
@@ -226,9 +277,15 @@ export class ClickStatService {
       };
 
       // Update opened and click timestamps
-      const latestUpdates: { latest_click?: Date; latest_open?: Date } = {};
+      const latestUpdates: {
+        latest_click?: Date;
+        latest_open?: Date;
+      } = {};
 
-      if (!campaign.click_tracking_disabled && linkId > LinkId.GENERAL_CLICK) {
+      if (
+        !campaign.click_tracking_disabled &&
+        linkId > LinkId.GENERAL_CLICK
+      ) {
         latestUpdates.latest_click = now;
       }
 
@@ -236,17 +293,29 @@ export class ClickStatService {
         latestUpdates.latest_open = now;
       }
 
-      if (latestUpdates.latest_click || latestUpdates.latest_open) {
-        await tx(this.subscriberService.getSubscriptionTableName())
+      if (
+        latestUpdates.latest_click ||
+        latestUpdates.latest_open
+      ) {
+        await tx(
+          this.subscriberService.getSubscriptionTableName(),
+        )
           .update(latestUpdates)
           .where('id', subscription.id);
       }
 
       // Update clicks
-      if (linkId > LinkId.GENERAL_CLICK && !campaign.click_tracking_disabled) {
-        await tx('links').increment('hits').where('id', linkId);
+      if (
+        linkId > LinkId.GENERAL_CLICK &&
+        !campaign.click_tracking_disabled
+      ) {
+        await tx('links')
+          .increment('hits')
+          .where('id', linkId);
         if (await _countLink(linkId)) {
-          await tx('links').increment('visits').where('id', linkId);
+          await tx('links')
+            .increment('visits')
+            .where('id', linkId);
 
           // if (await _countLink(LinkId.GENERAL_CLICK, false)) {
           //   await tx('campaigns').increment('clicks').where('id', campaign.id);
@@ -257,7 +326,9 @@ export class ClickStatService {
       // Update opens
       if (!campaign.open_tracking_disabled) {
         if (await _countLink(LinkId.OPEN)) {
-          await tx('campaigns').increment('opened').where('id', campaign.id);
+          await tx('campaigns')
+            .increment('opened')
+            .where('id', campaign.id);
         }
       }
     });

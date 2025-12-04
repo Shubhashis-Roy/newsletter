@@ -14,7 +14,13 @@ import { SubscribersModule } from '../subscribers/subscribers.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ClickStat, Campaign, Link, List, Subscriber]),
+    TypeOrmModule.forFeature([
+      ClickStat,
+      Campaign,
+      Link,
+      List,
+      Subscriber,
+    ]),
     AuthModule,
     ListsModule,
     CampaignsModule,
