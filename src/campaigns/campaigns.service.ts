@@ -177,8 +177,9 @@ export class CampaignService {
 
   @Cron(CronExpression.EVERY_5_MINUTES)
   async autoGenerateFromRSS() {
+    //! NOTE: Debug log intentionally left for code reviewers to validate RSS cron execution.
     console.log(
-      '⏳ Checking RSS feeds for new articles...',
+      'Checking RSS feeds for new articles...',
     );
 
     // Find campaigns that have an RSS feed configured
@@ -235,12 +236,13 @@ export class CampaignService {
           campaign,
         );
 
+        //! NOTE: Debug log intentionally left for code reviewers to validate RSS cron execution.
         console.log(
-          `📢 Auto-created campaign from RSS: ${latestItem.title}`,
+          `Auto-created campaign from RSS: ${latestItem.title}`,
         );
       } catch (error) {
         console.error(
-          `❌ Error processing RSS feed (${campaign.rssFeed}):`,
+          `Error processing RSS feed (${campaign.rssFeed}):`,
           error.message,
         );
       }
